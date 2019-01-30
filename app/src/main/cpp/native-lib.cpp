@@ -53,39 +53,66 @@ void printMap(int map[][9])
         printf("\n");
     }
 }
-int LineDup(int value,int x,int y,int map[9][9])
+
+//return 1  fail can't write
+//return 0  success can write
+int LineDup(int x, int y, int value, int map[9][9])
 {
     int i = 0;
-    for (i=1;i<10;i++)
-        if(getPix(i, y, map) == value)
-            return 1;
+    for (i = 1; i<10; i++)
+        if (getPix(i, y, map) == value)
+        {
+            if (x != i)
+                return 1;
+        }
     for (i = 1; i<10; i++)
         if (getPix(x, i, map) == value)
-            return 1;
+        {
+            if (i != y)
+                return 1;
+        }
     return 0;
 }
 
-int GridDup(int value, int x, int y, int map[9][9])
+//return 1  fail can't write
+//return 0  success can write
+int GridDup( int x, int y,int value, int map[9][9])
 {
     int i = (x - 1) / 3;
     int j = (y - 1) / 3;
-    for (int a = i * 3+1; a<i * 3 + 3 + 1; a++)
+    for (int a = i * 3 + 1; a<i * 3 + 3 + 1; a++)
         for (int b = j * 3 + 1; b<j * 3 + 3 + 1; b++)
             if (getPix(a, b, map) == value)
-                return 1;
+            {
+                if (x!= a && b != y)
+                    return 1;
+            }
     return 0;
 }
-int IsValid(int value, int x, int y, int map[9][9])
+//return 1  fail can't write
+//return 0  success can write
+int IsValid(int x, int y,int value,  int map[9][9])
 {
-    return GridDup(value, x, y, map) || LineDup(value, x, y, map);
+    return GridDup( x, y, value,map) || LineDup( x, y, value,map);
 }
 int calc(int map[9][9])
 {
     int i, j;
-    i = 0; j = 0 ;
-
+    i = 0; j = 0;
+    for (i = 1; i < 10; i++)
+    {
+        for (j = 1; j < 10; j++)
+        {
+            int value = getPix(i, j, map);
+            if (value != 0)
+            {
+                if (1 == IsValid(i, j, value, map))
+                    return 0;
+            }
+        }
+    }
     int as[81][2] = { 0 };
-    int step=0;
+    int step = 0;
     for (i = 1; i < 10; i++)
     {
         for (j = 1; j < 10; j++)
@@ -99,18 +126,18 @@ int calc(int map[9][9])
         }
     }
     int pos = 0;
-    while (as[pos][0]!=0 && pos>=0 && pos<81)
+    while (as[pos][0] != 0 && pos >= 0 && pos<81)
     {
         int x = as[pos][0];
         int y = as[pos][1];
         int cur = getPix(x, y, map);
         if (cur < 9)
         {
-            while (IsValid(cur + 1, x, y, map) != 0)
+            while (IsValid(x, y, cur + 1, map) != 0)
             {
                 cur++;
             }
-            if(cur<9)
+            if (cur<9)
             {
                 setPix(x, y, cur + 1, map);
                 pos++;
@@ -128,21 +155,12 @@ int calc(int map[9][9])
             pos--;
         }
     }
-    if (pos<=0)
+    if (pos <= 0)
     {
         printf("decl fail\n");
         return 0;
     }
     return 1;
-    /*for (i = 1; i < 10; i++)
-    {
-        for (j = 1; j < 10; j++)
-        {
-
-        }
-
-    }*/
-
 }
 int main(int argc,char **argv)
 {
