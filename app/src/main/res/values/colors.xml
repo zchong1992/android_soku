@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="sokuW">#3311EE</color>
+    <color name="sockI">#0c7C10</color>
+    <color name="sockI3">#55CCee</color>
+    <color name="sukoToSelect">#cc88ee</color>
+</resources>
